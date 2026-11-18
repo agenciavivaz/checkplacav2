@@ -1,0 +1,2 @@
+-- PR-02 has no synthetic auth users. Create test users through Supabase Auth
+-- in an isolated development project before exercising the RLS checks.
