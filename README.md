@@ -17,3 +17,7 @@ Para login por e-mail, configure `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SUPABASE_UR
 ## Validação gratuita e catálogo (PR-03)
 
 A página inicial valida o formato da placa localmente. Não envia a placa a APIs, não cria conta e não persiste histórico. `/planos` mostra os preços de lançamento. O checkout em `/checkout` é um fluxo de preparação sem pedido ou cobrança. `POST /api/quotes` revalida a placa e somente responde a ofertas publicadas e licenciadas no banco. A migration do catálogo mantém todos os módulos desativados até aprovação comercial.
+
+## Pagamentos (PR-04 em preparação)
+
+A migration de pedidos e o processador idempotente de eventos estão prontos para testes locais com `npm run test:rls`. O checkout Asaas e o webhook real permanecem bloqueados até a confirmação do contrato de API atual e configuração das credenciais de Sandbox. Consulte `docs/integrations/asaas.md`.
