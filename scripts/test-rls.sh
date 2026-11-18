@@ -24,6 +24,7 @@ SQL
 docker exec -i "$container_name" psql -U postgres -v ON_ERROR_STOP=1 >/dev/null < supabase/migrations/20261118000100_profiles_and_roles.sql
 docker exec -i "$container_name" psql -U postgres -v ON_ERROR_STOP=1 >/dev/null < supabase/migrations/20261118000200_catalog.sql
 docker exec -i "$container_name" psql -U postgres -v ON_ERROR_STOP=1 >/dev/null < supabase/migrations/20261118000300_orders_and_payment_events.sql
+docker exec -i "$container_name" psql -U postgres -v ON_ERROR_STOP=1 >/dev/null < supabase/migrations/20261118000400_reports_and_provider_calls.sql
 
 docker exec -i "$container_name" psql -U postgres -v ON_ERROR_STOP=1 >/dev/null <<'SQL'
 insert into auth.users (id) values ('00000000-0000-0000-0000-000000000001'), ('00000000-0000-0000-0000-000000000002');
@@ -33,6 +34,8 @@ do $$ begin
   if has_table_privilege('anon', 'public.profiles', 'select') then raise exception 'profiles exposed to anon'; end if;
   if has_table_privilege('anon', 'public.integration_modules', 'select') then raise exception 'module costs exposed'; end if;
   if has_table_privilege('anon', 'public.orders', 'select') then raise exception 'orders exposed to anon'; end if;
+  if has_table_privilege('anon', 'public.reports', 'select') then raise exception 'reports exposed to anon'; end if;
+  if has_table_privilege('authenticated', 'public.provider_calls', 'select') then raise exception 'provider calls exposed'; end if;
   if has_function_privilege('authenticated', 'private.apply_payment_event(uuid,text,text,text)', 'execute') then raise exception 'payment processor exposed'; end if;
   if has_function_privilege('authenticated', 'public.apply_payment_event(uuid,text,text,text)', 'execute') then raise exception 'payment RPC exposed'; end if;
   if (select count(*) from public.integration_modules where license_approved or enabled) <> 0 then raise exception 'module activated without license'; end if;

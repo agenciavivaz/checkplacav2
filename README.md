@@ -21,3 +21,7 @@ A página inicial valida o formato da placa localmente. Não envia a placa a API
 ## Pagamentos (PR-04 em preparação)
 
 A migration de pedidos e o processador idempotente de eventos estão prontos para testes locais com `npm run test:rls`. O checkout Asaas e o webhook real permanecem bloqueados até a confirmação do contrato de API atual e configuração das credenciais de Sandbox. Consulte `docs/integrations/asaas.md`.
+
+## Dados veiculares (PR-05 em preparação)
+
+A camada de provedor e o runner de relatórios usam fixtures sintéticas e regras de pagamento, licença e orçamento. A Direct Data real permanece bloqueada. Consulte `docs/integrations/direct-data.md`.

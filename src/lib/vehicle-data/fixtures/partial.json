@@ -1,0 +1,12 @@
+{
+  "nacional": "clear",
+  "estadual": "unavailable",
+  "gravame": "no_data",
+  "roubo_furto": "clear",
+  "renajud": "inconclusive",
+  "recall": "clear",
+  "multas_radar": "unavailable",
+  "leilao": "alert",
+  "historico_proprietarios": "no_data",
+  "fipe": "clear"
+}
