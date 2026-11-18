@@ -30,7 +30,10 @@ export default function Home() {
           <Link href="/" className="brand" aria-label="Checkplaca, início">
             <span className="brand__accent">check</span>placa
           </Link>
-          <a className="site-header__link" href="#planos">Conheça os planos</a>
+          <nav className="site-header__nav" aria-label="Navegação principal">
+            <a className="site-header__link" href="#planos">Conheça os planos</a>
+            <Link className="site-header__link" href="/conta">Minha conta</Link>
+          </nav>
         </div>
       </header>
       <main>
