@@ -1,28 +1,12 @@
 import Link from "next/link";
 import { ButtonLink, Notice, PlanCard } from "@/components/ui";
+import { PlateValidator } from "@/components/plate/plate-validator";
+import { getVisibleOffers } from "@/lib/catalog/server";
 
-const plans = [
-  {
-    name: "Grátis",
-    price: "R$ 0",
-    description: "Verifique apenas se a placa segue um formato brasileiro conhecido.",
-    items: ["Formato antigo e Mercosul", "Sem cadastro", "Sem consulta de dados do veículo"],
-  },
-  {
-    name: "Essencial",
-    price: "R$ 19,90",
-    description: "Situação cadastral e restrições conforme as fontes disponíveis.",
-    items: ["Dados cadastrais", "Gravame e restrições", "Recall e débitos disponíveis"],
-  },
-  {
-    name: "Completo",
-    price: "R$ 39,90",
-    description: "Verificações adicionais para apoiar a análise pré-compra.",
-    items: ["Tudo do Essencial", "Histórico de leilão", "FIPE e histórico autorizado"],
-  },
-];
+export const instant = false;
 
-export default function Home() {
+export default async function Home() {
+  const offers = await getVisibleOffers();
   return (
     <>
       <header className="site-header">
@@ -42,15 +26,15 @@ export default function Home() {
             <p className="eyebrow">Informação para decidir melhor</p>
             <h1 id="hero-title">Mais clareza antes de comprar um veículo.</h1>
             <p className="lead">Comece pelo formato da placa. Quando as consultas estiverem disponíveis, veja informações veiculares em um relatório fácil de entender.</p>
+            <PlateValidator />
             <div className="actions">
-              <ButtonLink href="#planos">Ver opções de consulta</ButtonLink>
-              <ButtonLink href="#como-funciona" variant="secondary">Como funciona</ButtonLink>
+              <ButtonLink href="#planos" variant="secondary">Ver opções de consulta</ButtonLink>
             </div>
           </div>
           <aside className="hero__panel" id="como-funciona">
             <p className="eyebrow">O primeiro passo</p>
             <h2>Comece com a placa.</h2>
-            <p>O validador gratuito verificará apenas se a combinação segue o padrão brasileiro antigo ou Mercosul.</p>
+            <p>O validador gratuito verifica apenas se a combinação segue o padrão brasileiro antigo ou Mercosul.</p>
             <div className="plate-example">
               <span>Exemplos de formato</span>
               <strong>AAA1234 <span aria-hidden="true">·</span> AAA1A23</strong>
@@ -63,7 +47,7 @@ export default function Home() {
           <h2 id="plans-title">Escolha o nível de informação.</h2>
           <p className="section-intro">A validação gratuita e os planos pagos têm finalidades diferentes. A disponibilidade de cada fonte será informada no relatório.</p>
           <div className="plan-grid">
-            {plans.map((plan) => <PlanCard key={plan.name} {...plan} featured={plan.name === "Essencial"} />)}
+            {offers.map((plan) => <PlanCard key={plan.code} {...plan} featured={plan.code === "essential"} footer={plan.code !== "free" ? <ButtonLink href={`/checkout?plan=${plan.code}`} variant="secondary">Selecionar {plan.name}</ButtonLink> : undefined} />)}
           </div>
           <Notice>As consultas pagas ainda estão em preparação. Nenhuma cobrança ou consulta a fornecedores é realizada nesta etapa.</Notice>
         </section>

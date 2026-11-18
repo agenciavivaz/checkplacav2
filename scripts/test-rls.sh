@@ -21,6 +21,7 @@ grant usage on schema auth to authenticated;
 SQL
 
 docker exec -i "$container_name" psql -U postgres -v ON_ERROR_STOP=1 >/dev/null < supabase/migrations/20261118000100_profiles_and_roles.sql
+docker exec -i "$container_name" psql -U postgres -v ON_ERROR_STOP=1 >/dev/null < supabase/migrations/20261118000200_catalog.sql
 
 docker exec -i "$container_name" psql -U postgres -v ON_ERROR_STOP=1 >/dev/null <<'SQL'
 insert into auth.users (id) values ('00000000-0000-0000-0000-000000000001'), ('00000000-0000-0000-0000-000000000002');
@@ -28,6 +29,12 @@ do $$ begin
   if (select count(*) from public.profiles) <> 2 then raise exception 'profile trigger failed'; end if;
   if has_table_privilege('authenticated', 'public.user_roles', 'select') then raise exception 'roles exposed'; end if;
   if has_table_privilege('anon', 'public.profiles', 'select') then raise exception 'profiles exposed to anon'; end if;
+  if has_table_privilege('anon', 'public.integration_modules', 'select') then raise exception 'module costs exposed'; end if;
+  if (select count(*) from public.integration_modules where license_approved or enabled) <> 0 then raise exception 'module activated without license'; end if;
+  if (select price_cents from public.plan_versions where plan_id = (select id from public.plans where code = 'essential')) <> 1990 then raise exception 'essential price changed'; end if;
+  if (select price_cents from public.plan_versions where plan_id = (select id from public.plans where code = 'complete')) <> 3990 then raise exception 'complete price changed'; end if;
+  if (select sum(estimated_cost_cents) from public.integration_modules where code in (select unnest(modules) from public.plan_versions where plan_id = (select id from public.plans where code = 'essential'))) <> 971 then raise exception 'essential cost changed'; end if;
+  if (select sum(estimated_cost_cents) from public.integration_modules where code in (select unnest(modules) from public.plan_versions where plan_id = (select id from public.plans where code = 'complete'))) <> 2970 then raise exception 'complete cost changed'; end if;
 end $$;
 begin;
 set local role authenticated;
@@ -40,6 +47,12 @@ do $$ declare changed integer; begin
   update public.profiles set display_name = 'Owner' where user_id = '00000000-0000-0000-0000-000000000001';
   get diagnostics changed = row_count;
   if changed <> 1 then raise exception 'own update failed'; end if;
+end $$;
+rollback;
+begin;
+set local role anon;
+do $$ begin
+  if (select count(*) from public.plans) <> 0 then raise exception 'unpublished plans visible'; end if;
 end $$;
 rollback;
 SQL
