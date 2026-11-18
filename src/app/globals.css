@@ -129,3 +129,19 @@ h2 { font-size: clamp(1.9rem, 3vw, 2.7rem); letter-spacing: -.04em; line-height:
 .account-form label { font-weight: 700; }
 .account-form input { width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font: inherit; }
 .account-form .button { justify-self: start; cursor: pointer; font: inherit; font-weight: 700; }
+.plate-form { max-width: 580px; margin-top: 30px; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
+.plate-form label { display: block; margin-bottom: 10px; font-weight: 700; }
+.plate-form__row { display: flex; gap: 10px; }
+.plate-form input { min-width: 0; flex: 1; min-height: 48px; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--ink); font: inherit; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.plate-form input[aria-invalid="true"] { border-color: var(--danger); }
+.plate-form button { cursor: pointer; font: inherit; font-weight: 700; }
+.plate-form__help { margin: 10px 0 0; color: var(--muted); font-size: .85rem; }
+.plate-form__result:not(:empty) { margin-top: 12px; }
+.plate-form__result p { margin: 0; line-height: 1.5; }
+.plate-form__success { color: #126848; }
+.plate-form__error { color: var(--danger); }
+.plans-page { padding-block: 48px 96px; }
+.plans-page .eyebrow { margin-top: 60px; }
+.plans-page h1 { margin: 0 0 20px; }
+.text-link { color: var(--primary-hover); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 600px) { .plate-form__row { flex-direction: column; } .plate-form__row button { width: 100%; } }

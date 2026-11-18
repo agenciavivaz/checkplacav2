@@ -4,7 +4,7 @@ export type PlanCardProps = {
   name: string;
   price: string;
   description: string;
-  items: string[];
+  items: readonly string[];
   footer?: ReactNode;
   featured?: boolean;
 };

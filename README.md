@@ -13,3 +13,7 @@ O PRD integral está em [`docs/prd/PRD_Checkplaca_v1.md`](docs/prd/PRD_Checkplac
 ## Supabase Auth (PR-02)
 
 Para login por e-mail, configure `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` no ambiente. No Supabase Auth, permita a URL `/auth/confirm` como redirect e aplique as migrations de `supabase/migrations/` em um projeto de desenvolvimento. O envio de OTP usa o provedor de e-mail configurado no Supabase. `/entrar` inicia o acesso e `/conta` exige sessão válida. A ausência das variáveis mantém a página pública e o healthcheck disponíveis.
+
+## Validação gratuita e catálogo (PR-03)
+
+A página inicial valida o formato da placa localmente. Não envia a placa a APIs, não cria conta e não persiste histórico. `/planos` mostra os preços de lançamento. O checkout em `/checkout` é um fluxo de preparação sem pedido ou cobrança. `POST /api/quotes` revalida a placa e somente responde a ofertas publicadas e licenciadas no banco. A migration do catálogo mantém todos os módulos desativados até aprovação comercial.
